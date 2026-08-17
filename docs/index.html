@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>スマホ2台を15万円で買うまでの全記録</title>
+<meta name="description" content="老眼対応の大画面Androidと開発検証用iPhoneを、予算15万円で買うまでの全過程。調査の出典、候補を落とした理由、前提が覆って方針転換した経緯まで残した記録。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbfaf8; --surface:#ffffff; --surface-2:#f4f2ee;
+  --ink:#1c1a17; --ink-2:#55504a; --ink-3:#8a8279;
+  --line:#e3ded6; --line-2:#d0c9be;
+  --accent:#b4531f; --accent-soft:#fdf0e6;
+  --ok:#2f6b46; --ok-soft:#e8f3ec;
+  --warn:#8a6413; --warn-soft:#fbf2dc;
+  --no:#9c3232; --no-soft:#fceceb;
+  --radius:14px;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15140f; --surface:#1e1c17; --surface-2:#26241e;
+    --ink:#f2ece1; --ink-2:#bcb4a6; --ink-3:#8b8377;
+    --line:#332f27; --line-2:#453f35;
+    --accent:#e8925a; --accent-soft:#2e2018;
+    --ok:#7cc79a; --ok-soft:#1a2820;
+    --warn:#dfb95f; --warn-soft:#2b2415;
+    --no:#e08b84; --no-soft:#2e1c1a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15140f; --surface:#1e1c17; --surface-2:#26241e;
+  --ink:#f2ece1; --ink-2:#bcb4a6; --ink-3:#8b8377;
+  --line:#332f27; --line-2:#453f35;
+  --accent:#e8925a; --accent-soft:#2e2018;
+  --ok:#7cc79a; --ok-soft:#1a2820;
+  --warn:#dfb95f; --warn-soft:#2b2415;
+  --no:#e08b84; --no-soft:#2e1c1a;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  line-height:1.85; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:820px;margin:0 auto;padding:0 22px}
+
+/* hero */
+header.hero{
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 100%);
+  padding:76px 0 52px;
+}
+.eyebrow{
+  font-size:.78rem;letter-spacing:.14em;color:var(--accent);
+  font-weight:700;margin:0 0 18px;
+}
+h1{
+  font-size:clamp(1.85rem,5.2vw,2.9rem);line-height:1.32;
+  margin:0 0 20px;font-weight:900;letter-spacing:-.01em;
+}
+.lede{font-size:1.06rem;color:var(--ink-2);margin:0;max-width:62ch}
+
+/* result strip */
+.result{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:14px;margin:38px 0 0;
+}
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:20px;
+}
+.card .role{font-size:.74rem;color:var(--ink-3);letter-spacing:.1em;font-weight:700}
+.card .name{font-size:1.12rem;font-weight:700;margin:7px 0 3px;line-height:1.45}
+.card .spec{font-size:.83rem;color:var(--ink-2);margin:0 0 12px}
+.card .price{font-size:1.5rem;font-weight:900;font-family:var(--mono);letter-spacing:-.02em}
+.card .price small{font-size:.72rem;font-weight:500;color:var(--ink-3);font-family:inherit;margin-left:3px}
+.total{
+  background:var(--accent-soft);border-color:var(--accent);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.total .price{color:var(--accent)}
+.budget{font-size:.82rem;color:var(--ink-2);margin-top:6px}
+
+/* sections */
+main{padding:8px 0 20px}
+section{padding:52px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+h2{
+  font-size:1.42rem;font-weight:800;margin:0 0 8px;letter-spacing:-.01em;
+  display:flex;align-items:baseline;gap:11px;
+}
+h2 .num{
+  font-family:var(--mono);font-size:.8rem;color:var(--accent);
+  font-weight:700;letter-spacing:0;
+}
+.sub{color:var(--ink-2);margin:0 0 26px;font-size:.96rem}
+h3{font-size:1.06rem;font-weight:700;margin:32px 0 12px}
+p{margin:0 0 15px}
+
+/* table */
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:420px}
+th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{
+  font-weight:700;color:var(--ink-2);font-size:.79rem;
+  letter-spacing:.05em;background:var(--surface-2);white-space:nowrap;
+}
+td.num{font-family:var(--mono);white-space:nowrap;font-size:.88rem}
+tr:last-child td{border-bottom:0}
+
+/* requirement list */
+.reqs{display:grid;gap:12px;margin:0 0 8px}
+.req{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:18px 20px;
+}
+.req h4{margin:0 0 9px;font-size:1rem;font-weight:700;display:flex;align-items:center;gap:9px}
+.req .tag{
+  font-size:.7rem;padding:3px 9px;border-radius:99px;font-weight:700;
+  background:var(--surface-2);color:var(--ink-2);letter-spacing:.04em;
+}
+.req p{margin:0;font-size:.9rem;color:var(--ink-2)}
+.req .why{
+  margin-top:9px;padding-top:9px;border-top:1px dashed var(--line-2);
+  font-size:.86rem;color:var(--ink-3);
+}
+
+/* pivot cards */
+.pivot{
+  background:var(--surface);border:1px solid var(--line);
+  border-left:3px solid var(--accent);
+  border-radius:var(--radius);padding:22px 24px;margin:0 0 16px;
+}
+.pivot h3{margin:0 0 6px;font-size:1.05rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pivot .badge{
+  font-size:.68rem;background:var(--accent-soft);color:var(--accent);
+  padding:3px 9px;border-radius:99px;font-weight:800;letter-spacing:.05em;
+}
+.shift{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:.86rem;margin:14px 0;
+}
+.shift .from{color:var(--ink-3);text-decoration:line-through}
+.shift .to{color:var(--ok);font-weight:700}
+.shift .arw{color:var(--ink-3)}
+.pivot p:last-child{margin-bottom:0}
+
+/* callout */
+.note{
+  border-radius:var(--radius);padding:17px 20px;margin:0 0 16px;
+  font-size:.91rem;border:1px solid;
+}
+.note strong{font-weight:700}
+.note.ok{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 30%,transparent);color:var(--ink)}
+.note.warn{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 32%,transparent);color:var(--ink)}
+.note.no{background:var(--no-soft);border-color:color-mix(in srgb,var(--no) 30%,transparent);color:var(--ink)}
+.note p{margin:0}
+.note p+p{margin-top:8px}
+.note .lbl{font-weight:800;font-size:.79rem;letter-spacing:.05em;display:block;margin-bottom:5px}
+.note.ok .lbl{color:var(--ok)}
+.note.warn .lbl{color:var(--warn)}
+.note.no .lbl{color:var(--no)}
+
+/* verdict marks */
+.y{color:var(--ok);font-weight:700}
+.n{color:var(--no);font-weight:700}
+
+/* files */
+.files{display:grid;gap:9px}
+.file{
+  display:flex;gap:14px;align-items:baseline;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:10px;padding:13px 17px;
+  text-decoration:none;color:inherit;transition:border-color .15s,transform .15s;
+}
+.file:hover{border-color:var(--accent);transform:translateX(2px)}
+.file code{
+  font-family:var(--mono);font-size:.82rem;color:var(--accent);
+  font-weight:600;white-space:nowrap;
+}
+.file span{font-size:.88rem;color:var(--ink-2)}
+
+/* cta */
+.cta{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--ink);color:var(--bg);
+  padding:13px 24px;border-radius:99px;text-decoration:none;
+  font-weight:700;font-size:.93rem;transition:opacity .15s;
+}
+.cta:hover{opacity:.85}
+
+footer{
+  padding:40px 0 60px;color:var(--ink-3);font-size:.84rem;
+  border-top:1px solid var(--line);
+}
+footer a{color:var(--accent)}
+.disclaim{margin-top:12px;font-size:.79rem;line-height:1.7}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">CLAUDE CODE との対話ログ</p>
+    <h1>老眼と開発検証。<br>条件の違う2台を15万円で買う</h1>
+    <p class="lede">
+      普段遣いのAndroidは液晶が割れて買い替え。老眼で近くの文字が読めないので、とにかく大画面がいい。
+      iPhoneは開発の検証用に1台。条件がまるで違う2台を、予算15万円で選び切るまでの全記録です。
+    </p>
+
+    <div class="result">
+      <div class="card">
+        <div class="role">ANDROID／普段遣い</div>
+        <div class="name">Xiaomi 15T Pro</div>
+        <p class="spec">6.83型 / 3200nits / FeliCa / IP68<br>中古Bランク 256GB</p>
+        <div class="price">74,800<small>円</small></div>
+      </div>
+      <div class="card">
+        <div class="role">IPHONE／開発検証</div>
+        <div class="name">iPhone 13</div>
+        <p class="spec">Face ID / ノッチ / 国内版SIMフリー<br>中古Bランク 128GB</p>
+        <div class="price">47,800<small>円</small></div>
+      </div>
+      <div class="card total">
+        <div class="role">送料640円 込み</div>
+        <div class="price">123,240<small>円</small></div>
+        <div class="budget">予算15万円に対して<br><strong>約27,000円の余裕</strong></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="wrap">
+  <h2><span class="num">01</span>出発点</h2>
+  <p class="sub">2台の要件は、ほとんど正反対でした。</p>
+
+  <div class="reqs">
+    <div class="req">
+      <h4>Android <span class="tag">普段遣い・急ぎ</span></h4>
+      <p>液晶が割れたので買い替え。ゲームはしない。おサイフケータイと防水は必須。</p>
+      <div class="why"><strong>最重要:</strong> 老眼がひどく近くの文字が読めない。とにかく画面が大きいこと。重さ220g前後までは許容。</div>
+    </div>
+    <div class="req">
+      <h4>iPhone <span class="tag">開発検証用</span></h4>
+      <p>Wi-Fi中心。たまにpovoのSIMを挿して5Gテストをするので、SIMフリーと5G対応が必要。</p>
+      <div class="why"><strong>途中で判明:</strong> 検証対象は Firebase App Distribution で配布されるネイティブアプリ。この一言で推奨機種が変わりました。</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2><span class="num">02</span>前提が2回、覆った</h2>
+  <p class="sub">このプロジェクトの読みどころです。調べ直した結果、結論が変わった過程を残しています。</p>
+
+  <div class="pivot">
+    <h3>「79,800円」は回線契約が条件だった<span class="badge">3万円のズレ</span></h3>
+    <p>
+      検索結果には Xiaomi 15T Pro が「79,800円〜」と出ていました。ところがこれは<strong>乗り換え（MNP）キャンペーン価格</strong>で、回線契約が前提。
+      SIMフリー単体の新品は <strong>109,800円</strong> でした。
+    </p>
+    <div class="shift">
+      <span class="from">新品 109,800円</span>
+      <span class="arw">→</span>
+      <span class="to">中古Bランク 74,800円</span>
+    </div>
+    <p>
+      新品では予算を圧迫するため、中古に切り替え。この機種は<strong>2025年9月発売でまだ1年落ち以内</strong>、
+      中古としては新しい部類で、イオシスの3ヶ月保証も付きます。
+    </p>
+  </div>
+
+  <div class="pivot">
+    <h3>iPhone SE3 を外す理由が、そもそも間違っていた<span class="badge">論拠の訂正</span></h3>
+    <p>
+      当初は安さ重視で iPhone SE 第3世代（約29,000円）を勧め、その後「OSサポートが先に切れるかも」と説明しました。
+      <strong>これは誤りでした。</strong>SE3 と iPhone 13 は<strong>同じ A15 Bionic</strong> を積んでおり、サポート終了時期はほぼ同じです。
+    </p>
+    <div class="shift">
+      <span class="from">寿命が短いから</span>
+      <span class="arw">→</span>
+      <span class="to">検証カバー範囲が足りないから</span>
+    </div>
+    <p>
+      ネイティブアプリのレイアウト検証では、SE3 に <strong>Face ID・ノッチ・セーフエリア・ホームインジケータが存在しません</strong>。
+      現行iOSの標準的な画面構成を持たない端末では、本番ユーザーの大多数の見え方を再現できない。これが本当の理由でした。
+    </p>
+  </div>
+
+  <div class="note warn">
+    <span class="lbl">日本のスマホ価格記事を読むときの教訓</span>
+    <p>「実質価格」「乗り換え価格」「一括価格」が同じ記事に混在します。安い数字を見たら、<strong>必ず適用条件（回線契約・下取り・返却プログラムの有無）を確認する</strong>こと。</p>
+    <p>同じ罠は Pixel 10 Pro XL の「実質49,800円〜」にもありました。あれは下取り前提で、今回は<strong>下取りに出す端末の液晶が割れている</strong>ため額面通りにはなりません。</p>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2><span class="num">03</span>Android をどう選んだか</h2>
+  <p class="sub">最重要要件は「老眼で読める」こと。画面サイズだけでは判断しませんでした。</p>
+
+  <h3>候補を落とした理由</h3>
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>機種</th><th>判定</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Xiaomi 15T Pro</strong></td><td class="y">採用</td><td>6.83型。要件を全て満たし最安</td></tr>
+      <tr><td>Pixel 10 Pro XL</td><td>次点</td><td>要件は満たすが128,900円〜。1台で予算を使い切る</td></tr>
+      <tr><td>Galaxy S24 Ultra</td><td>保留</td><td>中古フリマ最安84,000円。ただし保証なし・個体差リスク</td></tr>
+      <tr><td>Galaxy S25 / S26 Ultra</td><td class="n">除外</td><td>中古でも142,800円〜。予算的に非現実的</td></tr>
+      <tr><td>AQUOS sense10<br>Xperia 10 VII</td><td class="n">除外</td><td><strong>6.1型</strong>。価格は魅力的だが購入目的の根幹に反する</td></tr>
+      <tr><td>Pixel 9a</td><td class="n">除外</td><td>全キャリア在庫切れ・実質販売終了</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>「大画面」以外に効く要素まで確認した</h3>
+  <p>老眼対策が最重要要件なので、実機レビューまで当たって可読性の裏を取りました。</p>
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>要素</th><th>実測値</th><th>効き方</th></tr></thead>
+    <tbody>
+      <tr><td>画面サイズ</td><td class="num">6.83型</td><td>調べた中で最大クラス</td></tr>
+      <tr><td>ピーク輝度</td><td class="num">3200 nits</td><td>屋外の直射日光下でも見づらくならない</td></tr>
+      <tr><td>画素密度</td><td class="num">447 ppi</td><td>文字が鮮明</td></tr>
+      <tr><td>パネル</td><td>AMOLED</td><td>高コントラストで文字の輪郭が立つ</td></tr>
+      <tr><td><strong>シンプルモード</strong></td><td>HyperOS 2</td><td>シニア向けにアイコンを拡大。<strong>ソフト側の対策</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note ok">
+    <span class="lbl">結論</span>
+    <p>物理サイズだけでなく<strong>輝度・画素密度・OS側の拡大機能</strong>まで揃っている。老眼対策としては現実的に最有力でした。</p>
+  </div>
+
+  <div class="note warn">
+    <span class="lbl">留意点（実機レビューで挙がったデメリット）</span>
+    <p>実測214g（寝ながら使うと顔に落ちる重さ）／ <strong>イヤホンジャックなし</strong>／ SDカード非対応。</p>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2><span class="num">04</span>iPhone をどう選んだか</h2>
+  <p class="sub">「安ければいい」から「検証できるか」へ、基準が切り替わりました。</p>
+
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>検証項目</th><th>SE3<br><span style="font-weight:400;font-size:.75rem">28,800円</span></th><th>iPhone 13<br><span style="font-weight:400;font-size:.75rem">47,800円</span></th></tr></thead>
+    <tbody>
+      <tr><td>Face ID</td><td class="n">✗ Touch IDのみ</td><td class="y">✓</td></tr>
+      <tr><td>ノッチ / セーフエリア</td><td class="n">✗</td><td class="y">✓</td></tr>
+      <tr><td>ホームインジケータ</td><td class="n">✗ ホームボタン</td><td class="y">✓</td></tr>
+      <tr><td>画面サイズ</td><td class="n">✗ 4.7型</td><td class="y">✓ 6.1型</td></tr>
+      <tr><td>5G（povoテスト）</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td>SoC / OS寿命</td><td>A15 Bionic</td><td><strong>A15 Bionic（同じ）</strong></td></tr>
+      <tr><td>Dynamic Island</td><td class="n">✗</td><td class="n">✗ ※14 Pro以降</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    <strong>寿命は互角で、違うのは検証カバー範囲だけ。</strong>同じ寿命なら、検証できる範囲が広いほうを選ぶ——という判断で iPhone 13 になりました。
+  </p>
+
+  <div class="note no">
+    <span class="lbl">iPhone 14 を飛ばした理由</span>
+    <p>Dynamic Island は <strong>14 Pro 以降</strong>の機能で、無印14では検証できません。iPhone 13 との差額12,000円に見合う検証上の利得がないため除外しました。</p>
+    <p>Dynamic Island が必須なら iPhone 15（中古 約87,000円）が必要で、合計は約167,000円。<strong>予算超過</strong>になります。</p>
+  </div>
+
+  <h3>個体選びで見たところ</h3>
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>確認項目</th><th>選んだ個体</th></tr></thead>
+    <tbody>
+      <tr><td>mini / Pro でないこと</td><td class="y">✓ iPhone13 A2631</td></tr>
+      <tr><td>バッテリー最大容量</td><td class="y">✓ 80%以上と明記</td></tr>
+      <tr><td>国内版SIMフリー</td><td class="y">✓ povoの5Gバンド対応</td></tr>
+      <tr><td>状態</td><td>中古Bランク（目立つ傷なし）</td></tr>
+      <tr><td>付属品</td><td class="n">本体のみ → ケーブル別途購入</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:.9rem;color:var(--ink-2)">
+    在庫46件から絞る手順は単純で、<strong>「mini」「Pro」「【バッテリー80%未満】」が付くものを消す</strong>だけ。残ったものから選びました。
+  </p>
+</section>
+
+<section class="wrap">
+  <h2><span class="num">05</span>調査そのものの記録</h2>
+  <p class="sub">検索結果が間違っていた事例と、その気づき方も残しました。</p>
+
+  <div class="note no">
+    <span class="lbl">検索要約が誤った価格を返した</span>
+    <p>検索の要約は iPhone 12 を「¥120,000〜¥130,000」、iPhone 13 を「¥140,000〜¥150,000」と報告しました。
+    <strong>2020〜2021年発売機の中古がこの価格になることはあり得ません。</strong>別機種（Pro Max や新品Pro）の価格表を拾ったものと判断し、価格表ページを直接取得して訂正しました。</p>
+  </div>
+
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>機種</th><th>検索要約</th><th>実際（3店の中央値）</th></tr></thead>
+    <tbody>
+      <tr><td>iPhone 12 64GB</td><td class="num n">¥120,000〜130,000</td><td class="num y">¥34,276</td></tr>
+      <tr><td>iPhone 13 128GB</td><td class="num n">¥140,000〜150,000</td><td class="num y">¥49,951</td></tr>
+      <tr><td>iPhone 14 128GB</td><td>—</td><td class="num">¥62,491</td></tr>
+      <tr><td>iPhone SE3 64GB</td><td>—</td><td class="num">¥28,800</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:.9rem;color:var(--ink-2)">
+    <strong>教訓:</strong> 中古価格は検索の要約を信用せず、価格表ページを直接読むこと。
+    リポジトリには調査15件すべてを、クエリ・出典URL・調査日つきで残しています。
+  </p>
+</section>
+
+<section class="wrap">
+  <h2><span class="num">06</span>買ったもの</h2>
+  <p class="sub">購入先はイオシス。実店舗13店はすべて繁華街の中心で駐車場が期待できないため、通販を選びました。</p>
+
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>品目</th><th>内訳</th><th>金額</th></tr></thead>
+    <tbody>
+      <tr><td>Xiaomi 15T Pro</td><td>モカゴールド 256GB / 中古Bランク</td><td class="num">74,800円</td></tr>
+      <tr><td>iPhone 13</td><td>ブルー 128GB / 中古Bランク</td><td class="num">47,800円</td></tr>
+      <tr><td>送料</td><td>1回分のみ</td><td class="num">640円</td></tr>
+      <tr><td colspan="2"><strong>合計</strong></td><td class="num"><strong>123,240円</strong></td></tr>
+      <tr><td>周辺機器</td><td>USB-C to Lightning 2m + 20W PD充電器（MFi認証）</td><td class="num">別途</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note ok">
+    <span class="lbl">ケーブルを別途買った理由</span>
+    <p>iPhone 13 は<strong>付属品が本体のみ</strong>。しかも Lightning 端子なので、Xiaomi に付属する Type-C ケーブルは使えません。
+    非認証品は iOS に弾かれることがあるため、<strong>MFi認証済み</strong>を選びました。</p>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2><span class="num">07</span>記録ファイル</h2>
+  <p class="sub">セッションが途切れても再開できるよう、過程を分割して残しています。</p>
+
+  <div class="files">
+    <a class="file" href="https://github.com/mktoho12/buy-smartphone/blob/main/01-requirements.md"><code>01-requirements</code><span>要件定義・ヒアリング結果</span></a>
+    <a class="file" href="https://github.com/mktoho12/buy-smartphone/blob/main/02-research-log.md"><code>02-research-log</code><span>調査ログ15件。クエリ・出典・調査日つき</span></a>
+    <a class="file" href="https://github.com/mktoho12/buy-smartphone/blob/main/03-recommendation.md"><code>03-recommendation</code><span>推奨構成と予算配分プラン</span></a>
+    <a class="file" href="https://github.com/mktoho12/buy-smartphone/blob/main/04-candidates.md"><code>04-candidates</code><span>候補機種の比較と除外理由</span></a>
+    <a class="file" href="https://github.com/mktoho12/buy-smartphone/blob/main/05-open-questions.md"><code>05-open-questions</code><span>未確定事項の管理</span></a>
+    <a class="file" href="https://github.com/mktoho12/buy-smartphone/blob/main/06-decision-log.md"><code>06-decision-log</code><span>意思決定ログ。方針転換と訂正の記録</span></a>
+    <a class="file" href="https://github.com/mktoho12/buy-smartphone/blob/main/07-purchase-order.md"><code>07-purchase-order</code><span>注文内容と購入後の手順</span></a>
+  </div>
+
+  <p style="margin-top:26px">
+    <a class="cta" href="https://github.com/mktoho12/buy-smartphone">リポジトリを見る →</a>
+  </p>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p>
+    調査はすべて <strong>2026年8月18日</strong> 時点。中古相場とキャンペーンは変動が激しいため、
+    価格をそのまま参考にする場合は各ファイルの調査日を確認してください。
+  </p>
+  <p class="disclaim">
+    個人の購入記録であり、特定機種の推奨を意図したものではありません。
+    価格・在庫・仕様は各販売店の情報を必ずご自身で確認してください。<br>
+    <a href="https://github.com/mktoho12/buy-smartphone">github.com/mktoho12/buy-smartphone</a>
+  </p>
+</footer>
+
+</body>
+</html>
